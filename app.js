@@ -19,8 +19,8 @@ const app = express();
 const PORT = process.env.PORT;
 const uri = process.env.MONGO_URI;
 const FURL = process.env.FRONTEND_URL;
-// export 
-const adminSecretKey = process.env.ADMIN_SECRET_KEY;
+export const adminSecretKey = process.env.ADMIN_SECRET_KEY;
+
 
 // database
 connectDb(uri);
@@ -56,9 +56,6 @@ app.get("/", (req, res) => {
     res.json({ success: true, message: "API is working!" });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
 
 // routes
 import userRoutes from './routes/User.js';
@@ -81,4 +78,4 @@ app.use(errorMiddleware)
 
 
 
-export { app, PORT, adminSecretKey };
+export default app;
