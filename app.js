@@ -19,7 +19,7 @@ const app = express();
 const PORT = process.env.PORT;
 const uri = process.env.MONGO_URI;
 const FURL = process.env.FRONTEND_URL;
-const adminSecretKey = process.env.ADMIN_SECRET_KEY;
+export const adminSecretKey = process.env.ADMIN_SECRET_KEY;
 
 
 // database
