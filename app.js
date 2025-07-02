@@ -102,4 +102,4 @@ process.on("unhandledRejection", (err) => {
 });
 
 
-export { app, adminSecretKey };
+export default app;
