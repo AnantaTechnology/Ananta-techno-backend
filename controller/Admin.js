@@ -8,45 +8,47 @@ import Blog from "../model/BlogPost.js";
 
 export const adminLogin = TryCatch(async (req, res, next) => {
 
-    const { secretKey } = req.body;
-    const isMatched = secretKey === adminSecretKey;
+  const { secretKey } = req.body;
+  const isMatched = secretKey === adminSecretKey;
 
-    if (!isMatched) return next(new ErrorHandler("Invalid Admin key", 401));
+  if (!isMatched) return next(new ErrorHandler("Invalid Admin key", 401));
 
-    const token = jwt.sign(secretKey, process.env.JWT_SECRET);
+  const token = jwt.sign(secretKey, process.env.JWT_SECRET);
 
-    return res.status(200)
-        .cookie(process.env.ADMIN_TOKEN, token, {
-            // maxAge: 10 * 24 * 60 * 60 * 1000,
-            sameSite: "none",
-            httpOnly: true,
-            secure: true,
-
-            // maxAge: 1000 * 60 * 1,
-            // maxAge: 1000 * 60 * 60 * 24 * 10,
-        })
-        .json({
-            success: true,
-            message: "Authenticated Successfully, Welcome Admin!",
-        });
+  return res.status(200)
+    .cookie(process.env.ADMIN_TOKEN, token, {
+      // maxAge: 10 * 24 * 60 * 60 * 1000,
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+      domain: ".ananta-techno-client.vercel.app", // <--- key!
+      path: "/",
+      expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+      // maxAge: 1000 * 60 * 1,
+      // maxAge: 1000 * 60 * 60 * 24 * 10,
+    })
+    .json({
+      success: true,
+      message: "Authenticated Successfully, Welcome Admin!",
+    });
 })
 
 
 export const adminLogout = TryCatch(async (req, res, next) => {
 
-    return res
-        .status(200)
-        .cookie(process.env.ADMIN_TOKEN, "", {
-            maxAge: 0,
-            sameSite: "none",
-            httpOnly: true,
-            secure: true,
+  return res.status(200)
+    .cookie(process.env.ADMIN_TOKEN, "", {
+      sameSite: "none",
+      httpOnly: true,
+      secure: true,
+      domain: process.env.COOKIE_DOMAIN || ".ananta-techno-client.vercel.app", // <--- key!
+      path: "/",
 
-        })
-        .json({
-            success: true,
-            message: "Logged Out Successfully",
-        });
+    })
+    .json({
+      success: true,
+      message: "Logged Out Successfully",
+    });
 });
 
 
@@ -56,11 +58,11 @@ export const adminLogout = TryCatch(async (req, res, next) => {
 
 // Return basic admin info (e.g., role)
 export const getAdminData = TryCatch(async (req, res) => {
-    // If you wish, inspect req.user/token here to confirm admin
-    return res.status(200).json({
-        success: true,
-        admin: true,
-    });
+  // If you wish, inspect req.user/token here to confirm admin
+  return res.status(200).json({
+    success: true,
+    admin: true,
+  });
 });
 
 
