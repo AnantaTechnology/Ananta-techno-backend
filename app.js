@@ -19,13 +19,8 @@ const app = express();
 const PORT = process.env.PORT;
 const uri = process.env.MONGO_URI;
 const FURL = process.env.FRONTEND_URL;
-export const adminSecretKey = process.env.ADMIN_SECRET_KEY;
+const adminSecretKey = process.env.ADMIN_SECRET_KEY;
 
-// Handling Uncaught Exceptions
-process.on("uncaughtException", (err) => {
-    console.error(`Uncaught Exception: ${err.message}`);
-    process.exit(1);
-});
 
 // database
 connectDb(uri);
@@ -47,11 +42,6 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
 
-app.use((req, res, next) => {
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
-    res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
-    next();
-});
 
 
 app.use(cors({
@@ -112,4 +102,4 @@ process.on("unhandledRejection", (err) => {
 });
 
 
-export default app;
+export { app, adminSecretKey };
