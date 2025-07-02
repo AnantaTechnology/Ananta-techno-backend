@@ -97,9 +97,9 @@ app.use((err, req, res, next) => {
 });
 
 
-const server = app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-});
+// const server = app.listen(PORT, () => {
+//     console.log(`🚀 Server running on port ${PORT}`);
+// });
 
 // Handle Unhandled Promise Rejections
 process.on("unhandledRejection", (err) => {
