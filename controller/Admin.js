@@ -7,6 +7,7 @@ import Blog from "../model/BlogPost.js";
 
 
 export const adminLogin = TryCatch(async (req, res, next) => {
+
   const { secretKey } = req.body;
   const isMatched = secretKey === adminSecretKey;
 
@@ -15,28 +16,32 @@ export const adminLogin = TryCatch(async (req, res, next) => {
   const token = jwt.sign(secretKey, process.env.JWT_SECRET);
 
   return res.status(200)
-    .cookie("Admin-Token", token, {
+    .cookie(process.env.ADMIN_TOKEN, token, {
+      // maxAge: 10 * 24 * 60 * 60 * 1000,
       sameSite: "none",
       httpOnly: true,
       secure: true,
-      domain: ".ananta-techno-client.vercel.app", // << KEY!
-      path: "/",
-      expires: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000),
+
+      // maxAge: 1000 * 60 * 1,
+      // maxAge: 1000 * 60 * 60 * 24 * 10,
     })
     .json({
       success: true,
       message: "Authenticated Successfully, Welcome Admin!",
     });
-});
+})
+
 
 export const adminLogout = TryCatch(async (req, res, next) => {
-  return res.status(200)
-    .clearCookie("Admin-Token", {
+
+  return res
+    .status(200)
+    .cookie(process.env.ADMIN_TOKEN, "", {
+      maxAge: 0,
       sameSite: "none",
       httpOnly: true,
       secure: true,
-      domain: ".ananta-techno-client.vercel.app", // << KEY!
-      path: "/",
+
     })
     .json({
       success: true,
