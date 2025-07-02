@@ -76,30 +76,6 @@ app.use('/api/v1/blog', blogRoutes);
 // errormiddleware
 app.use(errorMiddleware)
 
-// Error Handling Middleware (Fix `[object Object]` issue)
-app.use((err, req, res, next) => {
-    console.error("Middleware Error:", JSON.stringify(err, null, 2)); // Ensure proper logging
-
-    res.status(err.status || 500).json({
-        success: false,
-        message: err.message || "Internal Server Error",
-    });
-});
-
-
-// const server = app.listen(PORT, () => {
-//     console.log(`🚀 Server running on port ${PORT}`);
-// });
-
-// Handle Unhandled Promise Rejections
-process.on("unhandledRejection", (err) => {
-    console.error(`Unhandled Promise Rejection: ${err.message}`);
-    console.log("Shutting down the server due to unhandled promise rejection");
-
-    server.close(() => {
-        process.exit(1);
-    });
-});
 
 
 export default app;
